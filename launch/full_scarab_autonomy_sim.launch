@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+  <include file="$(find real_experiment_launch)/launch/max_seam_sensors_sim.launch">
+    <arg name="record_bag" value="false"/>
+    <arg name="robot" value="$(env AGENT)"/>
+    <arg name="scarab" value="true"/>
+  </include>
+
+  <include file="$(find real_experiment_launch)/launch/llol_scarab.launch">
+  </include>
+
+  <!-- <include file="$(find real_experiment_launch)/launch/navigation_scarab.launch">
+  </include> -->
+   <!-- <node pkg="rosbag" type="record" name="rosbag_record_for_sloam"
+       args="record $(env AGENT)/os_node/imu_packets
+                    $(env AGENT)/os_node/lidar_packets
+                    $(env AGENT)/os_node/metadata
+                    $(env AGENT)/image
+                    $(env AGENT)/camera_info
+                    $(env AGENT)/llol_odom/pose
+                    $(env AGENT)/llol_odom/sweep
+                    $(env AGENT)/image
+                    $(env AGENT)/global_est
+                    /tf_static
+                    /tf"/> -->
+</launch>

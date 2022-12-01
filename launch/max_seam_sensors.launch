@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="onboard_sensing" default="true"/>
+
+
+	<arg name="record_bag" default="false"/>
+	<arg name="robot" default="os_node"/>
+  <arg name="scarab" default="false"/>
+
+
+  
+  <!-- drivers -->
+  <group unless="$(arg scarab)">
+  <include file="$(find real_experiment_launch)/launch/ouster_decoder.launch">
+      <arg name="robot" value="$(arg robot)"/>
+      <arg name="sensor_hostname" value="192.168.100.12"/>
+      <arg name="udp_dest" value="192.168.100.1"/>
+      <arg name="lidar_port" value="7502"/>
+      <arg name="imu_port" value="7503"/>
+      <arg name="replay" value="false"/>
+      <arg name="lidar_mode" value="1024x10"/>
+      <arg name="metadata" value="ouster_metadata.json"/>
+  </include>
+  </group>
+
+  <group if="$(arg scarab)">
+  <include file="$(find real_experiment_launch)/launch/ouster_decoder_scarab.launch">
+      <arg name="robot" value="$(arg robot)"/>
+      <arg name="sensor_hostname" value="192.168.100.12"/>
+      <arg name="udp_dest" value="192.168.100.1"/>
+      <arg name="lidar_port" value="7502"/>
+      <arg name="imu_port" value="7503"/>
+      <arg name="replay" value="false"/>
+      <arg name="lidar_mode" value="1024x10"/>
+      <arg name="metadata" value="ouster_metadata.json"/>
+  </include>
+  </group>
+
+   
+  <!-- publish_tf -->
+  <group unless="$(arg scarab)"> 
+    <include file="$(find real_experiment_launch)/launch/publish_tf.launch">
+      <arg name="robot" value="$(arg robot)"/>
+      <arg name="robot_frame_id" value="$(arg robot)/base_link"/>
+      <arg name="vio_imu_frame_id" value="$(arg robot)/ovc_camera_link"/>
+   </include>
+  </group>
+
+   <group if="$(arg scarab)"> 
+    <include file="$(find real_experiment_launch)/launch/publish_tf_scarab.launch">
+      <arg name="robot" value="$(arg robot)"/>
+      <arg name="robot_frame_id" value="$(arg robot)/base_link"/>
+      <arg name="vio_imu_frame_id" value="$(arg robot)/ovc_camera_link"/>
+   </include>
+  </group>
+
+  <!-- bag record  -->
+	<group if="$(arg record_bag)"> 
+   <include file="$(find real_experiment_launch)/launch/record_bag_max_seam.launch">
+   </include>
+  </group>
+  
+ </launch>
+

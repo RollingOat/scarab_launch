@@ -1,0 +1,4 @@
+<launch>
+ <node pkg="rosbag" type="record" name="$(env AGENT)_rosbag_record_test"
+       args="record -o /home/scarab_admin/bags/ $(env AGENT)/os_node/imu_packets $(env AGENT)/os_node/lidar_packets $(env AGENT)/os_node/metadata /tf_static /tf"/>   
+</launch>
